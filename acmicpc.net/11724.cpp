@@ -22,7 +22,7 @@ int main() {
 		vc[u].push_back(v);
 		vc[v].push_back(u);
 	}
-	for (int i = 1; i <= N; i++) {//연결성분 개수 조사
+	for (int i = 1; i <= N; i++) {
 		if (check[i] == false) {
 			countconnected++;
 			DFS(i);
