@@ -9,19 +9,19 @@ string str[25];
 int N;
 vector<int> vc;
 
-void BFS(int i, int j, const int &dong) {
+void DFS(int i, int j, const int &dong) {
 	check[i][j] = dong;
 	if (i > 0 && str[i - 1][j] == '1' && check[i - 1][j] == 0) {//위쪽
-		BFS(i - 1, j, dong);
+		DFS(i - 1, j, dong);
 	}
 	if (i < N - 1 && str[i + 1][j] == '1' && check[i + 1][j] == 0) {//아래쪽
-		BFS(i + 1, j, dong);
+		DFS(i + 1, j, dong);
 	}
 	if (j > 0 && str[i][j - 1] == '1' && check[i][j - 1] == 0) {//왼쪽
-		BFS(i, j - 1, dong);
+		DFS(i, j - 1, dong);
 	}
 	if (j < N - 1 && str[i][j + 1] == '1' && check[i][j + 1] == 0) {//오른쪽
-		BFS(i, j + 1, dong);
+		DFS(i, j + 1, dong);
 	}
 	vc[dong]++;//집의 수 증가
 }
@@ -36,7 +36,7 @@ int main() {
 		for (int j = 0; j < N; j++) {
 			if (str[i][j] == '1' && check[i][j] == 0) {
 				vc.push_back(0);
-				BFS(i, j, dong);
+				DFS(i, j, dong);
 				dong++;
 			}
 		}
