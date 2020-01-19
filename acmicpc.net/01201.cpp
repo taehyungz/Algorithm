@@ -1,28 +1,29 @@
 #include <iostream>
+#include <algorithm>
+#include <vector>
 using namespace std;
-bool open[101];
+vector<int> vc;
 int main() {
-	int T;
-	int n;
-	int count = 0;
-	cin >> T;
-	while (T--) {
-		cin >> n; // 방 개수
-		for (int round = 1; round <= n; round++) { //n라운드만큼 진행
-			for (int room = 1; room <= n; room++) {
-				if (room%round == 0) {
-					open[room] = !open[room];
-				}
-			}
+	int N, M, K;
+	cin >> N >> M >> K;
+	//최대부분증가수열과 최대부분감소수열 -> ㅅ자모양으로 꼭대기에서 한 수를 공유함
+	if (M + K - 1 <= N && N <= M * K) {//N개의 수로 만들기 위해선 적어도 M+K-1과 같거나 커야함
+		//N이 M*K보다 크면 비둘기집 원리에 의해 만들 수 없다
+		for (int i = 1; i <= N; i++) {
+			vc.push_back(i);
 		}
-		for (int i = 1; i <= n; i++) {
-			if (open[i]) count++;
+		int idx = 0;//각 그룹의 시작 인덱스
+		for (int i = 1; i <= M; i++) { //M개의 그룹
+			int temp = min(idx + K, N - M + i);
+			reverse(vc.begin() + idx, vc.begin() + temp);
+			idx = temp;
 		}
-		cout << count << '\n';
-		for (int i = 0; i <= n; i++) {
-			open[i] = false;
+		for (int i = 0; i < N; i++) {
+			cout << vc[i] << ' ';
 		}
-		count = 0;
+	}
+	else {
+		cout << -1;
 	}
 	return 0;
 }
