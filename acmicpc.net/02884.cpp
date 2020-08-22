@@ -2,18 +2,15 @@
 using namespace std;
 
 int main() {
-	ios_base::sync_with_stdio(false);
 	int H, M;
 	cin >> H >> M;
-	if (M < 45) {
-		H--;
-		M += 15;
+	if (M >= 45) {
+		cout << H << ' ' << (M - 45);
+	}
+	else if (H == 0) {
+		cout << 23 << ' ' << M + 15;
 	}
 	else {
-		M -= 45;
+		cout << H - 1 << ' ' << M + 15;
 	}
-	if (H <= 0) {
-		H = 23;
-	}
-	cout << H << " " << M;
 }
