@@ -1,11 +1,9 @@
 class Solution:
-    def singleNumber(self, nums: List[int]) -> int:
-        nums.sort()
-        if len(nums) == 1:
-            return nums[0]
-        if nums[0] != nums[1]:
-            return nums[0]
-        for i in range(0,len(nums)-1, 2):
-            if nums[i] != nums[i+1]:
-                return nums[i]
-        return nums[-1]
+    def climbStairs(self, n: int) -> int:
+        dp = collections.defaultdict(int)
+        
+        dp[1] = 1
+        dp[2] = 2
+        for i in range(3, n+1):
+            dp[i] = dp[i-1]+dp[i-2]
+        return dp[n]
