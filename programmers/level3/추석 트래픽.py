@@ -1,4 +1,3 @@
-import heapq
 import datetime as dt
 
 def solution(lines):
