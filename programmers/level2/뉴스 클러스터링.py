@@ -6,6 +6,6 @@ def solution(str1, str2):
     multi_list2 = [str2[i:i+2] for i in range(len(str2)-1) if str2[i].isalpha() and str2[i+1].isalpha()]
     if not multi_list1 and not multi_list2: return 65536
     c1, c2 = counter(multi_list1), counter(multi_list2)
-    c1_and_c2 = counter(dict(map(lambda x: (x[0], x[1]//2), ((c1+c2) - ((c1-c2) + (c2-c1))).items())))
-    c1_or_c2 = (c1+c2) - (c1_and_c2)
-    return math.floor(sum(c1_and_c2.values()) / sum(c1_or_c2.values()) * 65536)
+    c1_and_c2_mul2 = c1 + c2 - (c1-c2) - (c2-c1)
+    c1_or_c2_mul2 = c1 + c1 + c2 + c2 - c1_and_c2_mul2
+    return math.floor(sum(c1_and_c2_mul2.values()) / sum(c1_or_c2_mul2.values()) * 65536)
