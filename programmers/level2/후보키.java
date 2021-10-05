@@ -15,9 +15,8 @@ class Solution {
             for(int j=0; j<relation[0].length; j++)
                 relation2[j][i] = relation[i][j];
         
-        // System.out.println(Arrays.deepToString(relation2));
         for(int i=0; i<relation2.length; i++) {
-            dfs(""+i);
+            dfs(""+i); //키조합 구하기
         }
         Collections.sort(candidate, (s1, s2) -> {
             if(s1.length() < s2.length()) return -1;
@@ -37,19 +36,17 @@ class Solution {
         }
     }
     
-    public void findKeys(String colIdxs) { //조합한 컬럼idx가 키 역할을 하는지 식별
-        Set<String> attrSets = new HashSet<>(); //튜플 각각의 컬럼조합들을 넣음
-        int entities = 0;
-        for(int tuple=0; tuple<relation2[0].length; tuple++) {
+    public void findKeys(String colIdxs) { //조합한 컬럼idx가 키 역할을 하는지 검사
+        Set<String> attrSets = new HashSet<>(); //튜플 각각의 컬럼값 조합들을 넣음
+        for(int tuple=0; tuple<relation2[0].length; tuple++) { //원래 테이블 레코드 개수
             StringBuilder sb = new StringBuilder();
-            for(char ch: colIdxs.toCharArray()) { //컬럼들
-                int colNo = ch - '0';
+            for(char ch: colIdxs.toCharArray()) { //조합한 컬럼idx리스트중 한 조합
+                int colNo = ch - '0'; //컬럼 인덱스
                 sb.append(relation2[colNo][tuple]);
             }
-            entities++;
             attrSets.add(sb.toString());
         }
-        if(attrSets.size() == entities) {
+        if(attrSets.size() == relation2[0].length) {
             if(isMinimum(colIdxs)) {
                 result++;
                 candKeys.add(colIdxs);
@@ -60,18 +57,8 @@ class Solution {
     public boolean isMinimum(String colIdxs) { //식별한 키가 최소키인지를 확인
         for(String candKey: candKeys) {
             boolean check = false;
-            if(candKey.length() > colIdxs.length()) {
-                for(char partKey: colIdxs.toCharArray()) {
-                    if(!isIn(candKey, partKey)) {
-                        check = true;
-                    }
-                }
-            } else {
-                for(char partKey: candKey.toCharArray()) {
-                    if(!isIn(colIdxs, partKey)) {
-                        check = true;
-                    }
-                }
+            for(char partKey: candKey.toCharArray()) {
+                if(!isIn(colIdxs, partKey)) check = true;
             }
             if(!check) return false;
         }

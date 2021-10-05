@@ -1,26 +1,23 @@
 import itertools
 
 def solution(relation):
-    def examine(idxs): #최소키 여부 검사
-        for key in key_idx: #키로 판별된 것들 중에서
-            check = False
-            for part_key in key: #검사해서 키로 판별된 것을 완전히 포함하면 최소키 아님
-                if part_key not in idxs: #최소키 가능성 있음
-                    check = True
-            if not check: return False #모든 검사 통과하면 최소키임
-        return True
-    
-    len_rel = len(relation[0])
-    key_idx = set()
-    idx_list = list(range(len_rel)) #idx 후보들
-    for length in range(1,len_rel+1):
-        idx_arr = tuple(itertools.combinations(idx_list, length)) #조합 인덱스들
-        temp_rel = list(zip(*relation)) #로우로 묶기
-        for idxs in idx_arr:
-            ls = []
-            for i in idxs: #로우로 묶은 배열에서 조합 인덱스에 있는 내용들을 선택
-                ls.append(temp_rel[i])
-            final_rel = list(zip(*ls))
-            if len(list(set(final_rel))) == len(final_rel) and examine(idxs):
-                key_idx.add(idxs)
-    return len(key_idx)
+    def check_duplicated(candidate_combination_key):
+        for ck in ck_list: # 각 후보키에 대해
+            duplicated = True
+            for splited_key in ck: # 후보키의 각 원소들이
+                if splited_key not in candidate_combination_key: duplicated = False # 모두 이번 예비키에 있으면 후보키가 아니다
+            if duplicated: return True
+        return False
+                
+    row_count = len(relation)
+    ck_list = []
+    for i in range(1, len(relation[0])+1):
+        idx_list = list(itertools.combinations([i for i in range(1, len(relation[0])+1)], i)) # 인덱스 집합 리스트
+        ck_candidate_list = list(map(lambda x: list(itertools.combinations(x, i)), relation)) # i개씩의 컬럼으로 묶은 집합 리스트
+        set_record_ck_candidate = list(map(lambda x: set(x), zip(*ck_candidate_list))) # 위의 리스트를 컬럼기준으로 묶음 -> set 적용
+        each_count = list(map(lambda x: len(x), set_record_ck_candidate)) # idx_list[i]대로 키집합 설정시 set적용 레코드의 수
+
+        for idx, count in enumerate(each_count):
+            if count == row_count and not check_duplicated(idx_list[idx]):
+                ck_list.append(idx_list[idx])
+    return len(ck_list)
